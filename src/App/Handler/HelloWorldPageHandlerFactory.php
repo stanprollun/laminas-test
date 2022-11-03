@@ -6,11 +6,12 @@ namespace App\Handler;
 
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 class HelloWorldPageHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : HelloWorldPageHandler
+    public function __invoke(ContainerInterface $container): HelloWorldPageHandler
     {
-        return new HelloWorldPageHandler($container->get(TemplateRendererInterface::class));
+        return new HelloWorldPageHandler($container->get(LoggerInterface::class), $container->get(TemplateRendererInterface::class));
     }
 }

@@ -4,28 +4,22 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use Laminas\Diactoros\Response\HtmlResponse;
+use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Laminas\Diactoros\Response\HtmlResponse;
-use Mezzio\Template\TemplateRendererInterface;
+use Psr\Log\LoggerInterface;
 
 class HelloWorldPageHandler implements RequestHandlerInterface
 {
-    /**
-     * @var TemplateRendererInterface
-     */
-    private $renderer;
-
-    public function __construct(TemplateRendererInterface $renderer)
+    public function __construct(private LoggerInterface $logger, private TemplateRendererInterface $renderer)
     {
-        $this->renderer = $renderer;
     }
 
-    public function handle(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // Do some work...
-        // Render and return a response:
+        $this->logger->info('hello world handler called');
         return new HtmlResponse($this->renderer->render(
             'app::hello-world-page',
             [] // parameters to pass to template
