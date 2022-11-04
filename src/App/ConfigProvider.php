@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App;
 
+use Psr\Log\LoggerInterface;
+use rollun\logger\Writer\Stream;
+
 /**
  * The configuration provider for the App module
  *
@@ -22,6 +25,18 @@ class ConfigProvider
         return [
             'dependencies' => $this->getDependencies(),
             'templates'    => $this->getTemplates(),
+            'log' => [
+                LoggerInterface::class => [
+                    'writers' => [
+                        'stream_stdout' => [
+                            'name' => Stream::class,
+                            'options' => [
+                                'stream' => __DIR__ . DIRECTORY_SEPARATOR . 'log.txt',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
